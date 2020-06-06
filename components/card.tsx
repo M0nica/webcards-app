@@ -1,14 +1,14 @@
 import Button from "./button";
 
-const Card = ({ data, handleAnswer }) => (
+const Card = ({ questions, handleAnswer }) => (
   <>
     <div className="card">
-      <h3>{data.question} </h3>
-      <p>{data.description}</p>
-      {data.choices.map((choice) => (
+      <h3>{questions.question} </h3>
+      <p>{questions.description}</p>
+      {questions.choices.map((choice) => (
         <Button
           answer={choice}
-          correctChoice={data.correctChoice}
+          correctChoice={questions.correctChoice}
           handleAnswer={handleAnswer}
           key={choice}
         />

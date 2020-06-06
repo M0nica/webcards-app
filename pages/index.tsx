@@ -1,33 +1,19 @@
 import Head from "next/head";
 import Card from "../components/card";
 import ScoreCard from "../components/scoreCard";
-import { scrambledAnswer } from "../utils/answers";
-import { useState } from "react";
-
-const data = [
-  {
-    question: "4**2 equals ____",
-    description: "",
-    choices: [8, 16, 6, 4],
-    correctChoice: scrambledAnswer(16),
-  },
-  {
-    question: "Can functional React components maintain their own state?",
-    description: "Note: this is in React 16.8+",
-    choices: [
-      "No, only class-based functions can maintain state",
-      "Yes, with React Hooks",
-    ],
-    correctChoice: scrambledAnswer("Yes, with React Hooks"),
-  },
-];
+import { scrambledAnswer, questions } from "../utils/answers";
+import { useState, SyntheticEvent } from "react";
 
 function Home() {
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
   const [wrong, setWrong] = useState([]);
 
-  function handleAnswer(e, value, correctChoice) {
+  function handleAnswer(
+    e: React.SyntheticEvent,
+    value: string | number,
+    correctChoice: number
+  ) {
     e.preventDefault();
     if (correctChoice == scrambledAnswer(value)) {
       setScore(score + 1);
@@ -49,12 +35,14 @@ function Home() {
         <ScoreCard score={score} strikes={wrong} />
         <p className="description">
           {round == 0 && `Get started by choosing an answer below:`}
-          {round > 0 && data[round] && `You've attempted ${round} question(s)`}
-          {round > 0 && !data[round] && `Thanks for playing!`}
+          {round > 0 &&
+            questions[round] &&
+            `You've attempted ${round} question(s)`}
+          {round > 0 && !questions[round] && `Thanks for playing!`}
         </p>{" "}
         <div>
-          {data[round] && (
-            <Card data={data[round]} handleAnswer={handleAnswer} />
+          {questions[round] && (
+            <Card questions={questions[round]} handleAnswer={handleAnswer} />
           )}
         </div>
       </main>
@@ -111,17 +99,8 @@ function Home() {
         }
 
         .title,
-        .description,
-        .score {
+        .description {
           text-align: center;
-        }
-
-        .score {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-        .strikes {
-          color: red;
         }
       `}</style>
 
