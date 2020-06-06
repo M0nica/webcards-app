@@ -48,7 +48,10 @@ function Home() {
       </main>
 
       <footer>
-        <a href="https://www.github.com/m0nica"> Contribute on Github </a>
+        <a href="https://github.com/M0nica/webcards-app">
+          {" "}
+          Contribute on Github{" "}
+        </a>
       </footer>
 
       <style jsx>{`
