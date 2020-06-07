@@ -1,13 +1,18 @@
 import Head from "next/head";
 import Card from "../components/card";
 import ScoreCard from "../components/scoreCard";
-import { scrambledAnswer, questions } from "../utils/answers";
-import { useState, SyntheticEvent } from "react";
+import { scrambledAnswer } from "../utils/answers";
+import { useState } from "react";
+import useSwr from "swr";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function Home() {
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
   const [wrong, setWrong] = useState([]);
+  const { data, error } = useSwr("/api/answers", fetcher);
+  const questions = data;
 
   function handleAnswer(
     e: React.SyntheticEvent,
@@ -41,9 +46,10 @@ function Home() {
           {round > 0 && !questions[round] && `Thanks for playing!`}
         </p>{" "}
         <div>
-          {questions[round] && (
+          {questions && questions[round] && (
             <Card questions={questions[round]} handleAnswer={handleAnswer} />
           )}
+          {error && <div>Failed to load question bank.</div>}
         </div>
       </main>
 
